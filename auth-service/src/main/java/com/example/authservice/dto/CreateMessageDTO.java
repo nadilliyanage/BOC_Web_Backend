@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserTypeDTO {
-    private Integer id;
-    private String value;
+public class CreateMessageDTO {
+    private Long id;
     private String label;
+    private String message;
+
+
 }
