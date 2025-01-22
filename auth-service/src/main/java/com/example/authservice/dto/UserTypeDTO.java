@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserTypeDTO {
-    private Integer id; // Match with `UserType` entity
+    private Integer id;
     private String value;
     private String label;
 }
