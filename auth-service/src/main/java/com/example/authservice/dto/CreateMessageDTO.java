@@ -11,6 +11,5 @@ public class CreateMessageDTO {
     private Long id;
     private String label;
     private String message;
-
-
+    private String status;
 }

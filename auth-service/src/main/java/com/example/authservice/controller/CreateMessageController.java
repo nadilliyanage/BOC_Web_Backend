@@ -12,6 +12,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping(value = "/api/v1/create-message")
 public class CreateMessageController {
+
     @Autowired
     private CreateMessageService createMessage;
 
@@ -19,6 +20,24 @@ public class CreateMessageController {
     @GetMapping
     public ResponseEntity<List<CreateMessageDTO>> getAllCreateMessage() {
         return ResponseEntity.ok(createMessage.getAllCreateMessage());
+    }
+
+    // Fetch pending messages
+    @GetMapping("/pending")
+    public ResponseEntity<List<CreateMessageDTO>> getPendingMessages() {
+        return ResponseEntity.ok(createMessage.getPendingMessages());
+    }
+
+    // Fetch rejected messages
+    @GetMapping("/rejected")
+    public ResponseEntity<List<CreateMessageDTO>> getRejectedMessages() {
+        return ResponseEntity.ok(createMessage.getRejectedMessages());
+    }
+
+    // Fetch accepted messages
+    @GetMapping("/accepted")
+    public ResponseEntity<List<CreateMessageDTO>> getAcceptedMessages() {
+        return ResponseEntity.ok(createMessage.getAcceptedMessages());
     }
 
     // Add a new SMS type
@@ -48,4 +67,13 @@ public class CreateMessageController {
         createMessage.deleteCreateMessage(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Update message status (accepted or rejected)
+    @PutMapping("/status/{id}")
+    public ResponseEntity<CreateMessageDTO> updateMessageStatus(@PathVariable Long id, @RequestBody CreateMessageDTO createMessageDTO) {
+        CreateMessageDTO updatedMessageStatus = createMessage.updateMessageStatus(id, createMessageDTO);
+        return ResponseEntity.ok(updatedMessageStatus);
+    }
+
+
 }
