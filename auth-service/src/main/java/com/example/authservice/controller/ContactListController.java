@@ -41,4 +41,28 @@ public class ContactListController {
         List<String> fileNames = contactListService.getUploadedFiles();
         return ResponseEntity.ok(fileNames);
     }
+
+    // Endpoint to delete file and associated records
+    @DeleteMapping("/deleteFile")
+    public ResponseEntity<String> deleteFile(@RequestParam String fileName) {
+        try {
+            contactListService.deleteFile(fileName);
+            return ResponseEntity.ok("File and associated records deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting file.");
+        }
+    }
+
+    // Endpoint to edit a contact's number by user ID
+    @PutMapping("/editNumber/{id}")
+    public ResponseEntity<String> editContactNumber(@PathVariable Long id, @RequestParam String newNumber) {
+        try {
+            contactListService.editContactNumber(id, newNumber);
+            return ResponseEntity.ok("Contact number updated successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body("Error updating contact number: " + e.getMessage());
+        }
+    }
+
+
 }
