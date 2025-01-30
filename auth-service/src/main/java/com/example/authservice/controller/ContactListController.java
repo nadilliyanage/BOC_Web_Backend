@@ -53,7 +53,7 @@ public class ContactListController {
         }
     }
 
-    // Endpoint to edit a contact's number by user ID
+    // Endpoint to edit a contact's number by ID
     @PutMapping("/editNumber/{id}")
     public ResponseEntity<String> editContactNumber(@PathVariable Long id, @RequestParam String newNumber) {
         try {
@@ -64,5 +64,14 @@ public class ContactListController {
         }
     }
 
-
+    // Endpoint to delete a specific contact by ID
+    @DeleteMapping("/deleteNumber/{id}")
+    public ResponseEntity<String> deleteNumber(@PathVariable Long id) {
+        try {
+            contactListService.deleteNumber(id);
+            return ResponseEntity.ok("Contact deleted successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body("Error deleting contact: " + e.getMessage());
+        }
+    }
 }
