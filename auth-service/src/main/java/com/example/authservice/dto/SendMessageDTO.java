@@ -8,7 +8,7 @@ public class SendMessageDTO {
     private String sender;
     private List<String> numbers;
     private String message;
-    private LocalDateTime schedule; // Use LocalDateTime
+    private LocalDateTime schedule; // Local date and time for Sri Lanka
 
     // Getters and Setters
     public String getCampaignName() {

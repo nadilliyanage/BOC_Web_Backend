@@ -71,7 +71,7 @@ public class CreateMessageService {
 
         createMessage.setLabel(createMessageDTO.getLabel());
         createMessage.setMessage(createMessageDTO.getMessage());
-        createMessage.setStatus(createMessageDTO.getStatus()); // Allow status updates
+        createMessage.setStatus("pending"); // Allow status updates
 
         CreateMessage updatedCreateMessage = createMessageRepo.save(createMessage);
         return mapToDTO(updatedCreateMessage);

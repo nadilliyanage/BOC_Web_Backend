@@ -1,33 +1,26 @@
 package com.example.authservice.model;
 
-
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
-@Table(name = "send_message")
 public class SendMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "campaign_name", nullable = false)
     private String campaignName;
-
-    @Column(name = "sender", nullable = false)
     private String sender;
-
-    @Column(name = "number", nullable = false)
     private String number;
-
-    @Column(name = "message", nullable = false)
     private String message;
-
-    @Column(name = "schedule")
-    private LocalDateTime schedule; // Use LocalDateTime
-
-    @Column(name = "status", nullable = false)
+    private LocalDateTime schedule; // Local date and time for Sri Lanka
     private String status;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt; // Automatically populated with the current local date and time
 
     // Getters and Setters
     public Long getId() {
@@ -84,5 +77,13 @@ public class SendMessage {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

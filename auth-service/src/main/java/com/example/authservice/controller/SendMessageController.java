@@ -3,7 +3,12 @@ package com.example.authservice.controller;
 import com.example.authservice.dto.SendMessageDTO;
 import com.example.authservice.service.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+import java.time.LocalDateTime;
 
 @RestController
 @CrossOrigin
@@ -14,7 +19,20 @@ public class SendMessageController {
     private SendMessageService sendMessageService;
 
     @PostMapping
-    public void saveSendMessage(@RequestBody SendMessageDTO sendMessageDTO) {
-        sendMessageService.saveSendMessage(sendMessageDTO);
+    public ResponseEntity<String> sendMessage(@RequestBody SendMessageDTO sendMessageDTO) {
+        try {
+            // Convert schedule to Sri Lanka time if it is in UTC
+            if (sendMessageDTO.getSchedule() != null) {
+                ZonedDateTime utcSchedule = ZonedDateTime.parse(sendMessageDTO.getSchedule() + "Z"); // Assume schedule is in UTC
+                ZonedDateTime sriLankaSchedule = utcSchedule.withZoneSameInstant(ZoneId.of("Asia/Colombo"));
+                sendMessageDTO.setSchedule(sriLankaSchedule.toLocalDateTime());
+            }
+
+            // Save the message
+            sendMessageService.saveSendMessage(sendMessageDTO);
+            return ResponseEntity.ok("SMS campaign saved successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error saving SMS campaign: " + e.getMessage());
+        }
     }
 }

@@ -1,9 +1,6 @@
 package com.example.authservice.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
@@ -17,6 +14,7 @@ public class CreateMessage {
     private String label;
     private String message;
 
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'pending'")
     private String status; // New field to track message status (e.g., pending, rejected, accepted)
 
     // Constructors
