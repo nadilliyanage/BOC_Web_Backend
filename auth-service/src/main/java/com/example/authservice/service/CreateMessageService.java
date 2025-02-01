@@ -14,44 +14,84 @@ public class CreateMessageService {
     @Autowired
     private CreateMessageRepo createMessageRepo;
 
-    // Fetch all SMS types
+    // Fetch all messages
     public List<CreateMessageDTO> getAllCreateMessage() {
-        List<CreateMessage> createMessage = createMessageRepo.findAll();
-        return createMessage.stream()
-                .map(createmsg -> new CreateMessageDTO(createmsg.getId(), createmsg.getLabel(), createmsg.getMessage()))
+        List<CreateMessage> createMessages = createMessageRepo.findAll();
+        return createMessages.stream()
+                .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
-    // Add a new SMS type
-    public CreateMessageDTO addCreateMessage(CreateMessageDTO createmsgDTO) {
-        CreateMessage createmsg = new CreateMessage();
-        createmsg.setLabel(createmsgDTO.getLabel());
-        createmsg.setMessage(createmsgDTO.getMessage());
-
-        CreateMessage savedCreateMessage = createMessageRepo.save(createmsg);
-        return new CreateMessageDTO(savedCreateMessage.getId(), savedCreateMessage.getLabel(), savedCreateMessage.getMessage());
+    // Fetch pending messages
+    public List<CreateMessageDTO> getPendingMessages() {
+        List<CreateMessage> pendingMessages = createMessageRepo.findByStatus("pending");
+        return pendingMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
-    // Fetch a single SMS type by ID
+    // Fetch rejected messages
+    public List<CreateMessageDTO> getRejectedMessages() {
+        List<CreateMessage> rejectedMessages = createMessageRepo.findByStatus("rejected");
+        return rejectedMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Fetch accepted messages
+    public List<CreateMessageDTO> getAcceptedMessages() {
+        List<CreateMessage> acceptedMessages = createMessageRepo.findByStatus("accepted");
+        return acceptedMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Add a new message
+    public CreateMessageDTO addCreateMessage(CreateMessageDTO createMessageDTO) {
+        CreateMessage createMessage = new CreateMessage();
+        createMessage.setLabel(createMessageDTO.getLabel());
+        createMessage.setMessage(createMessageDTO.getMessage());
+        createMessage.setStatus("pending"); // Default status is "pending"
+
+        CreateMessage savedCreateMessage = createMessageRepo.save(createMessage);
+        return mapToDTO(savedCreateMessage);
+    }
+
+    // Fetch a single message by ID
     public CreateMessageDTO getCreateMessageById(Long id) {
-        CreateMessage createmsg = createMessageRepo.findById(id)
+        CreateMessage createMessage = createMessageRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("CreateMessage not found with ID: " + id));
-        return new CreateMessageDTO(createmsg.getId(), createmsg.getLabel(), createmsg.getMessage());
+        return mapToDTO(createMessage);
     }
 
-    // Update an existing SMS type
-    public CreateMessageDTO updateCreateMessage(Long id, CreateMessageDTO createmsgDTO) {
-        CreateMessage createmsg = createMessageRepo.findById(id)
+    // Update an existing message
+    public CreateMessageDTO updateCreateMessage(Long id, CreateMessageDTO createMessageDTO) {
+        CreateMessage createMessage = createMessageRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("CreateMessage not found with ID: " + id));
 
-        createmsg.setLabel(createmsgDTO.getLabel());
-        createmsg.setMessage(createmsgDTO.getMessage());
+        createMessage.setLabel(createMessageDTO.getLabel());
+        createMessage.setMessage(createMessageDTO.getMessage());
+        createMessage.setStatus("pending"); // Allow status updates
 
-        CreateMessage updatedCreateMessage = createMessageRepo.save(createmsg);
-        return new CreateMessageDTO(updatedCreateMessage.getId(), updatedCreateMessage.getLabel(), updatedCreateMessage.getMessage());
+        CreateMessage updatedCreateMessage = createMessageRepo.save(createMessage);
+        return mapToDTO(updatedCreateMessage);
     }
 
-    // Delete an SMS type
+    // Update message status (accept/reject)
+    public CreateMessageDTO updateMessageStatus(Long id, CreateMessageDTO createMessageDTO) {
+        CreateMessage createMessage = createMessageRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("CreateMessage not found with ID: " + id));
+
+        createMessage.setStatus(createMessageDTO.getStatus()); // Allow status updates
+
+        CreateMessage updatedCreateMessage = createMessageRepo.save(createMessage);
+        return mapToDTO(updatedCreateMessage);
+    }
+
+
+
+
+    // Delete a message
     public void deleteCreateMessage(Long id) {
         if (!createMessageRepo.existsById(id)) {
             throw new RuntimeException("CreateMessage not found with ID: " + id);
@@ -59,5 +99,13 @@ public class CreateMessageService {
         createMessageRepo.deleteById(id);
     }
 
-
+    // Helper method: Map CreateMessage entity to DTO
+    private CreateMessageDTO mapToDTO(CreateMessage createMessage) {
+        return new CreateMessageDTO(
+                createMessage.getId(),
+                createMessage.getLabel(),
+                createMessage.getMessage(),
+                createMessage.getStatus()
+        );
+    }
 }

@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateMessageDTO {
+public class NumberBlockDTO {
     private Long id;
-    private String label;
-    private String message;
-    private String status;
+    private String number; // Blocked phone number
 }
