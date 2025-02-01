@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SendMessageService {
@@ -18,18 +20,34 @@ public class SendMessageService {
     @Autowired
     private SendMessageRepository sendMessageRepository;
 
-    // Sri Lanka timezone
+    @Autowired
+    private NumberBlockService numberBlockService;
+
     private static final ZoneId SRI_LANKA_ZONE = ZoneId.of("Asia/Colombo");
 
     public void saveSendMessage(SendMessageDTO sendMessageDTO) {
         String campaignName = sendMessageDTO.getCampaignName();
         String sender = sendMessageDTO.getSender();
         String message = sendMessageDTO.getMessage();
-        LocalDateTime schedule = sendMessageDTO.getSchedule(); // Assume schedule is in local time (Sri Lanka)
+        LocalDateTime schedule = sendMessageDTO.getSchedule();
         List<String> numbers = sendMessageDTO.getNumbers();
+        boolean removeBlockedNumbers = sendMessageDTO.isRemoveBlockedNumbers(); // Get checkbox value
 
-        // Save each number as a separate record
-        for (String number : numbers) {
+        // Filter out blocked numbers if the checkbox is ticked
+        List<String> validNumbers = numbers;
+        if (removeBlockedNumbers) {
+            validNumbers = numbers.stream()
+                    .filter(number -> !numberBlockService.isNumberBlocked(number)) // Keep only non-blocked numbers
+                    .collect(Collectors.toList());
+        }
+
+        // If no valid numbers are left, throw an exception
+        if (validNumbers.isEmpty()) {
+            throw new RuntimeException("No valid numbers to save.");
+        }
+
+        // Save each valid number as a separate record
+        for (String number : validNumbers) {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setCampaignName(campaignName);
             sendMessage.setSender(sender);
@@ -38,7 +56,7 @@ public class SendMessageService {
             sendMessage.setSchedule(schedule);
 
             // Set status based on schedule
-            LocalDateTime now = LocalDateTime.now(SRI_LANKA_ZONE); // Current time in Sri Lanka
+            LocalDateTime now = LocalDateTime.now(SRI_LANKA_ZONE);
             if (schedule != null && schedule.isAfter(now)) {
                 sendMessage.setStatus("Scheduled");
             } else {
@@ -49,10 +67,10 @@ public class SendMessageService {
         }
     }
 
-    // Scheduled task to update status from "Scheduled" to "Pending" when the schedule time has passed
-    @Scheduled(fixedRate = 60000) // Runs every minute (adjust as needed)
+    // Scheduled task to update status from "Scheduled" to "Pending"
+    @Scheduled(fixedRate = 60000)
     public void updateScheduledMessages() {
-        LocalDateTime now = LocalDateTime.now(SRI_LANKA_ZONE); // Current time in Sri Lanka
+        LocalDateTime now = LocalDateTime.now(SRI_LANKA_ZONE);
         List<SendMessage> scheduledMessages = sendMessageRepository.findByStatusAndScheduleBefore("Scheduled", now);
 
         for (SendMessage message : scheduledMessages) {

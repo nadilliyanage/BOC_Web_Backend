@@ -84,7 +84,13 @@ public class NumberBlockService {
         numberBlock.setNumber(newNumber);
         numberBlockRepository.save(numberBlock);
 
+
+
         return new NumberBlockDTO(numberBlock.getId(), numberBlock.getNumber());
+    }
+
+    public boolean isNumberBlocked(String number) {
+        return numberBlockRepository.existsByNumber(number);
     }
 
 }
