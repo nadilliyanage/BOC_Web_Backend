@@ -23,14 +23,16 @@ public class SendMessageController {
         try {
             // Convert schedule to Sri Lanka time if it is in UTC
             if (sendMessageDTO.getSchedule() != null) {
-                ZonedDateTime utcSchedule = ZonedDateTime.parse(sendMessageDTO.getSchedule() + "Z"); // Assume schedule is in UTC
+                ZonedDateTime utcSchedule = ZonedDateTime.parse(sendMessageDTO.getSchedule() + "Z");
                 ZonedDateTime sriLankaSchedule = utcSchedule.withZoneSameInstant(ZoneId.of("Asia/Colombo"));
                 sendMessageDTO.setSchedule(sriLankaSchedule.toLocalDateTime());
             }
 
             // Save the message
             sendMessageService.saveSendMessage(sendMessageDTO);
-            return ResponseEntity.ok("SMS campaign saved successfully!");
+            return ResponseEntity.ok("SMS campaign saved successfully! Blocked numbers were removed.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); // Return error message
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error saving SMS campaign: " + e.getMessage());
         }

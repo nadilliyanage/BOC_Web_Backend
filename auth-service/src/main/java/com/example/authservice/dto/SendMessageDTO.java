@@ -10,6 +10,8 @@ public class SendMessageDTO {
     private String message;
     private LocalDateTime schedule; // Local date and time for Sri Lanka
 
+    private boolean removeBlockedNumbers;
+
     // Getters and Setters
     public String getCampaignName() {
         return campaignName;
@@ -50,4 +52,14 @@ public class SendMessageDTO {
     public void setSchedule(LocalDateTime schedule) {
         this.schedule = schedule;
     }
+
+    // Getters and setters
+    public boolean isRemoveBlockedNumbers() {
+        return removeBlockedNumbers;
+    }
+
+    public void setRemoveBlockedNumbers(boolean removeBlockedNumbers) {
+        this.removeBlockedNumbers = removeBlockedNumbers;
+    }
 }
+
