@@ -67,24 +67,22 @@ public class NumberBlockService {
         String newNumber = numberBlockDTO.getNumber();
 
         // Validate number format
-        if (!newNumber.startsWith("94") || newNumber.length() != 11) {
+        if (!newNumber.matches("^94\\d{9}$")) {
             throw new RuntimeException("Number must start with '94' and have a length of 11.");
-        }
-
-        // Check if the new number already exists
-        if (numberBlockRepository.existsByNumber(newNumber)) {
-            throw new RuntimeException("Number already blocked: " + newNumber);
         }
 
         // Find the existing number block
         NumberBlock numberBlock = numberBlockRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Number not found with ID: " + id));
 
+        // Check if the new number already exists (excluding the current number)
+        if (!newNumber.equals(numberBlock.getNumber()) && numberBlockRepository.existsByNumber(newNumber)) {
+            throw new RuntimeException("Number already blocked: " + newNumber);
+        }
+
         // Update the number
         numberBlock.setNumber(newNumber);
         numberBlockRepository.save(numberBlock);
-
-
 
         return new NumberBlockDTO(numberBlock.getId(), numberBlock.getNumber());
     }
