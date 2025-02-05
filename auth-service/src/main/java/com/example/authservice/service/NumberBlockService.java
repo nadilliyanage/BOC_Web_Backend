@@ -24,10 +24,11 @@ public class NumberBlockService {
             throw new RuntimeException("Number must start with '94' and have a length of 11.");
         }
 
-        // Check for duplicates
+        // Check if the new number already exists
         if (numberBlockRepository.existsByNumber(number)) {
             throw new RuntimeException("Number already blocked: " + number);
         }
+
 
         // Save the number
         NumberBlock numberBlock = new NumberBlock();
