@@ -20,6 +20,7 @@ public class SendMessage {
     private String message;
     private LocalDateTime schedule; // Local date and time for Sri Lanka
     private String status;
+    private String refno;
 
     @CreationTimestamp
     private LocalDateTime createdAt; // Automatically populated with the current local date and time
@@ -65,7 +66,9 @@ public class SendMessage {
         this.status = status;
     }
 
-
+    public void setRefno(String refno) {
+        this.refno = refno;
+    }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;

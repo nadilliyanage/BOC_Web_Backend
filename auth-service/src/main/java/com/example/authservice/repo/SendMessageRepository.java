@@ -11,4 +11,7 @@ public interface SendMessageRepository extends JpaRepository<SendMessage, Long> 
     List<SendMessage> findByStatusAndScheduleBefore(String status, LocalDateTime schedule);
 
     List<SendMessage> findByStatus(String status);
-} 
+
+    List<SendMessage> findByRefnoIsNotNull();
+
+}

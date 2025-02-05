@@ -101,6 +101,12 @@ public class SendMessageService {
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
+    public List<SendMessageDTO> getFinishedMessages() {
+        List<SendMessage> finishedMessages = sendMessageRepository.findByRefnoIsNotNull();
+        return finishedMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 
     private SendMessageDTO mapToDTO(SendMessage sendMessage) {
         return new SendMessageDTO(
@@ -109,7 +115,8 @@ public class SendMessageService {
                 sendMessage.getMessage(),
                 sendMessage.getSender(),
                 sendMessage.getSchedule(),
-                sendMessage.getStatus()
+                sendMessage.getStatus(),
+                sendMessage.getRefno()
         );
     }
 }
