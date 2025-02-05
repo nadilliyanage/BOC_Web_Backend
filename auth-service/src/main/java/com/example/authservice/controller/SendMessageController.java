@@ -1,5 +1,6 @@
 package com.example.authservice.controller;
 
+import com.example.authservice.dto.CreateMessageDTO;
 import com.example.authservice.dto.SendMessageDTO;
 import com.example.authservice.service.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +10,26 @@ import org.springframework.web.bind.annotation.*;
 import java.time.ZonedDateTime;
 import java.time.ZoneId;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/send-message")
+@RequestMapping(value = "/api/v1/send-message")
 public class SendMessageController {
 
     @Autowired
     private SendMessageService sendMessageService;
+
+    @GetMapping
+    public ResponseEntity<List<SendMessageDTO>> getAllSendMessage() {
+        return ResponseEntity.ok(sendMessageService.getAllSendMessage());
+    }
+
+    // Fetch pending messages
+    @GetMapping("/pending")
+    public ResponseEntity<List<SendMessageDTO>> getPendingMessages() {
+        return ResponseEntity.ok(sendMessageService.getPendingMessages());
+    }
 
     @PostMapping
     public ResponseEntity<String> sendMessage(@RequestBody SendMessageDTO sendMessageDTO) {

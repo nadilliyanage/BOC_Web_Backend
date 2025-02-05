@@ -1,65 +1,34 @@
 package com.example.authservice.dto;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class SendMessageDTO {
     private String campaignName;
     private String sender;
     private List<String> numbers;
     private String message;
-    private LocalDateTime schedule; // Local date and time for Sri Lanka
-
+    private LocalDateTime schedule;
+    private String status;
     private boolean removeBlockedNumbers;
 
-    // Getters and Setters
-    public String getCampaignName() {
-        return campaignName;
-    }
 
-    public void setCampaignName(String campaignName) {
+    public SendMessageDTO( String campaignName, String numbers, String message, String sender, LocalDateTime schedule, String status) {
         this.campaignName = campaignName;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public List<String> getNumbers() {
-        return numbers;
-    }
-
-    public void setNumbers(List<String> numbers) {
-        this.numbers = numbers;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
+        this.numbers = Collections.singletonList(numbers);
         this.message = message;
-    }
-
-    public LocalDateTime getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(LocalDateTime schedule) {
+        this.sender = sender;
         this.schedule = schedule;
-    }
+        this.status = status;
 
-    // Getters and setters
-    public boolean isRemoveBlockedNumbers() {
-        return removeBlockedNumbers;
-    }
-
-    public void setRemoveBlockedNumbers(boolean removeBlockedNumbers) {
-        this.removeBlockedNumbers = removeBlockedNumbers;
     }
 }
 
