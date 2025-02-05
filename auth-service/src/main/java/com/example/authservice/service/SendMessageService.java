@@ -95,6 +95,12 @@ public class SendMessageService {
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
+    public List<SendMessageDTO> getScheduledMessages() {
+        List<SendMessage> scheduledMessages = sendMessageRepository.findByStatus("Scheduled");
+        return scheduledMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 
     private SendMessageDTO mapToDTO(SendMessage sendMessage) {
         return new SendMessageDTO(

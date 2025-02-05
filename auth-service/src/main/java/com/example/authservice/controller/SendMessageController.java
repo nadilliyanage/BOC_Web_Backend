@@ -31,6 +31,12 @@ public class SendMessageController {
         return ResponseEntity.ok(sendMessageService.getPendingMessages());
     }
 
+    // Fetch pending scheduled
+    @GetMapping("/scheduled")
+    public ResponseEntity<List<SendMessageDTO>> getScheduledMessages() {
+        return ResponseEntity.ok(sendMessageService.getScheduledMessages());
+    }
+
     @PostMapping
     public ResponseEntity<String> sendMessage(@RequestBody SendMessageDTO sendMessageDTO) {
         try {
