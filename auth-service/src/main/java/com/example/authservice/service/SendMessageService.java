@@ -1,6 +1,8 @@
 package com.example.authservice.service;
 
+import com.example.authservice.dto.CreateMessageDTO;
 import com.example.authservice.dto.SendMessageDTO;
+import com.example.authservice.model.CreateMessage;
 import com.example.authservice.model.SendMessage;
 import com.example.authservice.repo.SendMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +79,44 @@ public class SendMessageService {
             message.setStatus("Pending");
             sendMessageRepository.save(message);
         }
+    }
+
+    public List<SendMessageDTO> getAllSendMessage() {
+        List<SendMessage> createMessages = sendMessageRepository.findAll();
+        return createMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Fetch pending messages
+    public List<SendMessageDTO> getPendingMessages() {
+        List<SendMessage> pendingMessages = sendMessageRepository.findByStatus("Pending");
+        return pendingMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+    public List<SendMessageDTO> getScheduledMessages() {
+        List<SendMessage> scheduledMessages = sendMessageRepository.findByStatus("Scheduled");
+        return scheduledMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+    public List<SendMessageDTO> getFinishedMessages() {
+        List<SendMessage> finishedMessages = sendMessageRepository.findByRefnoIsNotNull();
+        return finishedMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private SendMessageDTO mapToDTO(SendMessage sendMessage) {
+        return new SendMessageDTO(
+                sendMessage.getCampaignName(),
+                sendMessage.getNumber(),
+                sendMessage.getMessage(),
+                sendMessage.getSender(),
+                sendMessage.getSchedule(),
+                sendMessage.getStatus(),
+                sendMessage.getRefno()
+        );
     }
 }
