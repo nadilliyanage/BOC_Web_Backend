@@ -9,6 +9,7 @@ import java.time.ZoneId;
 
 @Getter
 @Entity
+@Table(name = "message")
 public class SendMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +21,7 @@ public class SendMessage {
     private String message;
     private LocalDateTime schedule; // Local date and time for Sri Lanka
     private String status;
-    private String refno;
+    private String referenceNumber;
 
     @CreationTimestamp
     private LocalDateTime createdAt; // Automatically populated with the current local date and time
@@ -66,8 +67,8 @@ public class SendMessage {
         this.status = status;
     }
 
-    public void setRefno(String refno) {
-        this.refno = refno;
+    public void setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

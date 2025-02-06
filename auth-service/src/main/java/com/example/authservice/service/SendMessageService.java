@@ -102,7 +102,7 @@ public class SendMessageService {
                 .collect(Collectors.toList());
     }
     public List<SendMessageDTO> getFinishedMessages() {
-        List<SendMessage> finishedMessages = sendMessageRepository.findByRefnoIsNotNull();
+        List<SendMessage> finishedMessages = sendMessageRepository.findByReferenceNumberIsNotNull();
         return finishedMessages.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
@@ -116,7 +116,7 @@ public class SendMessageService {
                 sendMessage.getSender(),
                 sendMessage.getSchedule(),
                 sendMessage.getStatus(),
-                sendMessage.getRefno()
+                sendMessage.getReferenceNumber()
         );
     }
 }

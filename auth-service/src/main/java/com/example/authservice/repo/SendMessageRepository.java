@@ -12,6 +12,6 @@ public interface SendMessageRepository extends JpaRepository<SendMessage, Long> 
 
     List<SendMessage> findByStatus(String status);
 
-    List<SendMessage> findByRefnoIsNotNull();
+    List<SendMessage> findByReferenceNumberIsNotNull();
 
 }
