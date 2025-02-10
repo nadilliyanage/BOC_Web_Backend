@@ -119,4 +119,14 @@ public class SendMessageService {
                 sendMessage.getReferenceNumber()
         );
     }
+
+    public long getCountOfPendingMessage() {
+        return sendMessageRepository.findByStatus("Pending").size();
+    }
+
+    public long getCountOfScheduledMessage() {
+        return sendMessageRepository.findByStatus("Scheduled").size();
+    }
+
+
 }

@@ -63,4 +63,18 @@ public class SendMessageController {
             return ResponseEntity.status(500).body("Error saving SMS campaign: " + e.getMessage());
         }
     }
+
+    // Endpoint to get the count of pending SMS
+    @GetMapping("/pending-sms-count")
+    public ResponseEntity<Long> getCountOfPendingMessage() {
+        long pendingSMSCount = sendMessageService.getCountOfPendingMessage();
+        return ResponseEntity.ok(pendingSMSCount);
+    }
+
+    // Endpoint to get the count of scheduled SMS
+    @GetMapping("/scheduled-sms-count")
+    public ResponseEntity<Long> getCountOfScheduledMessage() {
+        long scheduledSMSCount = sendMessageService.getCountOfScheduledMessage();
+        return ResponseEntity.ok(scheduledSMSCount);
+    }
 }

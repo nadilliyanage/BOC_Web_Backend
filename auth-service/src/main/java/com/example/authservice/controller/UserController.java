@@ -58,4 +58,12 @@ public class UserController {
             return ResponseEntity.status(200).body("User ID is available.");
         }
     }
+
+    // Endpoint to get the count of users
+    @GetMapping("/user-count")
+    public ResponseEntity<Long> getCountOfUsers() {
+        long userCount = userService.getCountOfUsers();
+        return ResponseEntity.ok(userCount);
+    }
 }
+
