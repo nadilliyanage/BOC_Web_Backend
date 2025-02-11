@@ -1,8 +1,6 @@
 package com.example.authservice.controller;
 
-import com.example.authservice.dto.CreateMessageDTO;
-import com.example.authservice.dto.MessageCountByDateDTO;
-import com.example.authservice.dto.SendMessageDTO;
+import com.example.authservice.dto.*;
 import com.example.authservice.service.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -79,9 +77,24 @@ public class SendMessageController {
         return ResponseEntity.ok(scheduledSMSCount);
     }
 
+
     @GetMapping("/message-count-by-date")
-    public ResponseEntity<List<MessageCountByDateDTO>> getMessageCountByDate() {
-        List<MessageCountByDateDTO> messageCountByDate = sendMessageService.getMessageCountByDate();
+    public ResponseEntity<List<MessageCountByDateDTO>> getMessageCountByDate(
+            @RequestParam int year,
+            @RequestParam int month) {
+        List<MessageCountByDateDTO> messageCountByDate = sendMessageService.getMessageCountByDate(year, month);
         return ResponseEntity.ok(messageCountByDate);
+    }
+
+    @GetMapping("/message-count-by-month")
+    public ResponseEntity<List<MessageCountByMonthDTO>> getMessageCountByMonth(@RequestParam int year) {
+        List<MessageCountByMonthDTO> messageCountByMonth = sendMessageService.getMessageCountByMonth(year);
+        return ResponseEntity.ok(messageCountByMonth);
+    }
+
+    @GetMapping("/message-count-by-year")
+    public ResponseEntity<List<MessageCountByYearDTO>> getMessageCountByYear() {
+        List<MessageCountByYearDTO> messageCountByYear = sendMessageService.getMessageCountByYear();
+        return ResponseEntity.ok(messageCountByYear);
     }
 }

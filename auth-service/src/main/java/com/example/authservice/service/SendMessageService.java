@@ -1,8 +1,6 @@
 package com.example.authservice.service;
 
-import com.example.authservice.dto.CreateMessageDTO;
-import com.example.authservice.dto.MessageCountByDateDTO;
-import com.example.authservice.dto.SendMessageDTO;
+import com.example.authservice.dto.*;
 import com.example.authservice.model.CreateMessage;
 import com.example.authservice.model.SendMessage;
 import com.example.authservice.repo.SendMessageRepository;
@@ -132,5 +130,17 @@ public class SendMessageService {
 
     public List<MessageCountByDateDTO> getMessageCountByDate() {
         return sendMessageRepository.findMessageCountByDate();
+    }
+
+    public List<MessageCountByDateDTO> getMessageCountByDate(int year, int month) {
+        return sendMessageRepository.findMessageCountByDate(year, month);
+    }
+
+    public List<MessageCountByMonthDTO> getMessageCountByMonth(int year) {
+        return sendMessageRepository.findMessageCountByMonth(year);
+    }
+
+    public List<MessageCountByYearDTO> getMessageCountByYear() {
+        return sendMessageRepository.findMessageCountByYear();
     }
 }
