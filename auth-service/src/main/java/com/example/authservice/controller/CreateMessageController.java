@@ -74,6 +74,14 @@ public class CreateMessageController {
         CreateMessageDTO updatedMessageStatus = createMessage.updateMessageStatus(id, createMessageDTO);
         return ResponseEntity.ok(updatedMessageStatus);
     }
+    // Endpoint to get the count of scheduled SMS
+    @GetMapping("/to-review-sms-count")
+    public ResponseEntity<Long> getCountOfToReviewMessage() {
+        long toReviewSMSCount = createMessage.getCountOfToReviewMessage();
+        return ResponseEntity.ok(toReviewSMSCount);
+    }
+
+
 
 
 }

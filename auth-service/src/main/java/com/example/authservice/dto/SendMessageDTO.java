@@ -18,18 +18,18 @@ public class SendMessageDTO {
     private String message;
     private LocalDateTime schedule;
     private String status;
-    private String refno;
+    private String referenceNumber;
     private boolean removeBlockedNumbers;
 
 
-    public SendMessageDTO( String campaignName, String numbers, String message, String sender, LocalDateTime schedule, String status, String refno) {
+    public SendMessageDTO( String campaignName, String numbers, String message, String sender, LocalDateTime schedule, String status, String referenceNumber) {
         this.campaignName = campaignName;
         this.numbers = Collections.singletonList(numbers);
         this.message = message;
         this.sender = sender;
         this.schedule = schedule;
         this.status = status;
-        this.refno = refno;
+        this.referenceNumber = referenceNumber;
 
     }
 }

@@ -67,4 +67,9 @@ public class UserService {
     public boolean doesUserIdExist(String userId) {
         return userRepo.existsByUserId(userId);
     }
+
+    // Method to get the count of users
+    public long getCountOfUsers() {
+        return userRepo.count();
+    }
 }

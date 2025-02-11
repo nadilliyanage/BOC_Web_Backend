@@ -108,4 +108,9 @@ public class CreateMessageService {
                 createMessage.getStatus()
         );
     }
+
+    public long getCountOfToReviewMessage() {
+        return createMessageRepo.findByStatus("pending").size();
+    }
+
 }
