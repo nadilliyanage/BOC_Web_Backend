@@ -1,8 +1,10 @@
 package com.example.authservice.repo;
 
+import com.example.authservice.dto.MessageCountByDateDTO;
 import com.example.authservice.model.CreateMessage;
 import com.example.authservice.model.SendMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,5 +15,12 @@ public interface SendMessageRepository extends JpaRepository<SendMessage, Long> 
     List<SendMessage> findByStatus(String status);
 
     List<SendMessage> findByReferenceNumberIsNotNull();
+
+
+    @Query("SELECT new com.example.authservice.dto.MessageCountByDateDTO(DATE(sm.createdAt), COUNT(sm)) " +
+            "FROM SendMessage sm " +
+            "GROUP BY DATE(sm.createdAt) " +
+            "ORDER BY DATE(sm.createdAt)")
+    List<MessageCountByDateDTO> findMessageCountByDate();
 
 }

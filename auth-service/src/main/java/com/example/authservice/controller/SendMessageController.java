@@ -1,6 +1,7 @@
 package com.example.authservice.controller;
 
 import com.example.authservice.dto.CreateMessageDTO;
+import com.example.authservice.dto.MessageCountByDateDTO;
 import com.example.authservice.dto.SendMessageDTO;
 import com.example.authservice.service.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +77,11 @@ public class SendMessageController {
     public ResponseEntity<Long> getCountOfScheduledMessage() {
         long scheduledSMSCount = sendMessageService.getCountOfScheduledMessage();
         return ResponseEntity.ok(scheduledSMSCount);
+    }
+
+    @GetMapping("/message-count-by-date")
+    public ResponseEntity<List<MessageCountByDateDTO>> getMessageCountByDate() {
+        List<MessageCountByDateDTO> messageCountByDate = sendMessageService.getMessageCountByDate();
+        return ResponseEntity.ok(messageCountByDate);
     }
 }
