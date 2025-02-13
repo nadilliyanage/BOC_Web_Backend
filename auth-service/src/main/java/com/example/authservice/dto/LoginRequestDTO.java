@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateMessageDTO {
-    private Long id;
-    private String label;
-    private String message;
-    private String createdBy;
-    private String status;
+public class LoginRequestDTO {
+    private String userId;
+    private String password;
+
+    // Getters and Setters
 }

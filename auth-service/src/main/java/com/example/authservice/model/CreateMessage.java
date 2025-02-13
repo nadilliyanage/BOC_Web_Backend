@@ -13,6 +13,7 @@ public class CreateMessage {
 
     private String label;
     private String message;
+    private String createdBy;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'pending'")
     private String status; // New field to track message status (e.g., pending, rejected, accepted)
@@ -42,12 +43,17 @@ public class CreateMessage {
         this.status = status;
     }
 
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
     @Override
     public String toString() {
         return "CreateMessage{" +
                 "id=" + id +
                 ", label='" + label + '\'' +
                 ", message='" + message + '\'' +
+                ", createdBy='" + createdBy + '\'' +
                 ", status='" + status + '\'' +
                 '}';
     }
