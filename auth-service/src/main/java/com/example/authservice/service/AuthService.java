@@ -23,6 +23,15 @@ public class AuthService {
         return adUser.isPresent() && adUser.get().getPassword().equals(password);
     }
 
+    public boolean validateCredentials(String userId, String password) {
+        Optional<ADTable> adUser = adTableRepository.findByUserId(userId);
+        return adUser.isPresent() && adUser.get().getPassword().equals(password);
+    }
+
+    public void saveUser(UserTable user) {
+        userTableRepository.save(user);
+    }
+
     public UserTable getUserDetails(String userId) {
         return userTableRepository.findByUserId(userId).orElse(null);
     }

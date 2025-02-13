@@ -105,6 +105,7 @@ public class CreateMessageService {
                 createMessage.getId(),
                 createMessage.getLabel(),
                 createMessage.getMessage(),
+                createMessage.getCreatedBy(),
                 createMessage.getStatus()
         );
     }

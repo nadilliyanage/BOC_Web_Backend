@@ -1,6 +1,7 @@
 package com.example.authservice.controller;
 
 import com.example.authservice.dto.LoginRequestDTO;
+import com.example.authservice.dto.SignUpRequestDTO;
 import com.example.authservice.model.UserTable;
 import com.example.authservice.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,20 @@ public class AuthController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
+    }
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@RequestBody SignUpRequestDTO signUpRequest) {
+        boolean isValid = authService.validateCredentials(signUpRequest.getUserId(), signUpRequest.getPassword());
+        if (!isValid) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+
+        UserTable newUser = new UserTable();
+        newUser.setUserId(signUpRequest.getUserId());
+        newUser.setName(signUpRequest.getName());
+        newUser.setRole("USER"); // Default role for new users
+
+        authService.saveUser(newUser);
+        return ResponseEntity.ok("User registered successfully");
     }
 }
