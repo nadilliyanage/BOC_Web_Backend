@@ -4,6 +4,7 @@ import com.example.authservice.model.ADTable;
 import com.example.authservice.model.UserTable;
 import com.example.authservice.repo.ADTableRepository;
 import com.example.authservice.repo.UserTableRepository;
+import com.example.authservice.util.EncryptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +30,21 @@ public class AuthService {
     }
 
     public void saveUser(UserTable user) {
+        // Encrypt the role before saving
+        String encryptedRole = EncryptionUtil.encrypt(user.getRole());
+        user.setRole(encryptedRole);
         userTableRepository.save(user);
+        String decryptedRole = EncryptionUtil.decrypt(user.getRole());
+        user.setRole(decryptedRole);
     }
 
     public UserTable getUserDetails(String userId) {
-        return userTableRepository.findByUserId(userId).orElse(null);
+        UserTable user = userTableRepository.findByUserId(userId).orElse(null);
+        if (user != null) {
+            // Decrypt the role before returning
+            String decryptedRole = EncryptionUtil.decrypt(user.getRole());
+            user.setRole(decryptedRole);
+        }
+        return user;
     }
 }
