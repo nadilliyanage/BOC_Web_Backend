@@ -127,6 +127,9 @@ public class SendMessageService {
         return sendMessageRepository.findByStatus("Scheduled").size();
     }
 
+    public long getCountOfErrorMessage() {
+        return sendMessageRepository.findByStatus("INVALID_MOBILE").size();
+    }
 
     public List<MessageCountByDateDTO> getMessageCountByDate() {
         return sendMessageRepository.findMessageCountByDate();
