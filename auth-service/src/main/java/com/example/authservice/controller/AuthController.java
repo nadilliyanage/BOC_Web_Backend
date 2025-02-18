@@ -44,6 +44,7 @@ public class AuthController {
         UserTable newUser = new UserTable();
         newUser.setUserId(signUpRequest.getUserId());
         newUser.setName(signUpRequest.getName());
+        newUser.setDepartment(signUpRequest.getDepartment());
         newUser.setRole("USER"); // Default role for new users
 
         authService.saveUser(newUser);

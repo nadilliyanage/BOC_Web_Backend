@@ -22,6 +22,7 @@ public class UserTable {
     private String userId;
     private String name;
     private String role; // Roles: ADMIN, USER1, USER2
+    private String department;
 
     // Getters and Setters
 }

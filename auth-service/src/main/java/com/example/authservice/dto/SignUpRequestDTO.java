@@ -11,6 +11,6 @@ public class SignUpRequestDTO {
     private String userId;
     private String password;
     private String name;
-
+    private String department;
 
 }

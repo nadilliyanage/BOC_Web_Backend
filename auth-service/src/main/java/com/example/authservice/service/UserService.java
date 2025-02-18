@@ -2,7 +2,7 @@ package com.example.authservice.service;
 
 
 import com.example.authservice.dto.UserDTO;
-import com.example.authservice.model.User;
+import com.example.authservice.model.UserTable;
 import com.example.authservice.repo.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,17 +25,25 @@ public class UserService {
 
     // Method to get all users
     public List<UserDTO> getAllUsers() {
-        List<User> userList = userRepo.findAll();
-        return modelMapper.map(userList, new TypeToken<List<UserDTO>>() {}.getType());
+        // Fetch all users from the repository
+        List<UserTable> userList = userRepo.findAll();
+
+        // Filter out users with the role "SUPERADMIN"
+        List<UserTable> filteredUsers = userList.stream()
+                .filter(user -> !"SUPERADMIN".equals(user.getRole()))
+                .collect(Collectors.toList());
+
+        // Map the filtered list to UserDTO
+        return modelMapper.map(filteredUsers, new TypeToken<List<UserDTO>>() {}.getType());
     }
 
     // Method to save a new user
     public UserDTO saveUser(UserDTO userDTO) {
         // Convert DTO to entity
-        User user = modelMapper.map(userDTO, User.class);
+        UserTable user = modelMapper.map(userDTO, UserTable.class);
 
         // Save the user (id will be auto-generated)
-        User savedUser = userRepo.save(user);
+        UserTable savedUser = userRepo.save(user);
 
         // Convert the saved entity back to DTO
         return modelMapper.map(savedUser, UserDTO.class);
@@ -43,10 +52,10 @@ public class UserService {
     // Method to update a user
     public UserDTO updateUser(UserDTO userDTO) {
         // Convert DTO to entity
-        User user = modelMapper.map(userDTO, User.class);
+        UserTable user = modelMapper.map(userDTO, UserTable.class);
 
         // Update the user
-        User savedUser = userRepo.save(user);
+        UserTable savedUser = userRepo.save(user);
 
         // Convert the saved entity back to DTO
         return modelMapper.map(savedUser, UserDTO.class);
@@ -59,7 +68,7 @@ public class UserService {
 
     // Method to get a user by their ID
     public UserDTO getUserById(int id) {
-        User user = userRepo.getUserById(id);
+        UserTable user = userRepo.getUserById(id);
         return modelMapper.map(user, UserDTO.class);
     }
 
