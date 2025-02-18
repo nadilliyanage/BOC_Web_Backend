@@ -11,7 +11,7 @@ public class UserDTO {
     private int id;
     private String userId;
     private String userName;
+    private String role;
     private String department;
-    private String userType;
-    private String smsType;
+
 }
