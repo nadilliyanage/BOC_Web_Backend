@@ -42,6 +42,11 @@ public class SendMessageController {
         return ResponseEntity.ok(sendMessageService.getFinishedMessages());
     }
 
+    @GetMapping("/error")
+    public ResponseEntity<List<SendMessageDTO>> getErrorMessages() {
+        return ResponseEntity.ok(sendMessageService.getErrorMessages());
+    }
+
 
     @PostMapping
     public ResponseEntity<String> sendMessage(@RequestBody SendMessageDTO sendMessageDTO) {

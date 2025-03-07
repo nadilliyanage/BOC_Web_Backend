@@ -107,6 +107,15 @@ public class SendMessageService {
                 .collect(Collectors.toList());
     }
 
+
+    public List<SendMessageDTO> getErrorMessages() {
+        List<SendMessage> errorMessages = sendMessageRepository.findByStatus("INVALID_MOBILE");
+        return errorMessages.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+
     private SendMessageDTO mapToDTO(SendMessage sendMessage) {
         return new SendMessageDTO(
                 sendMessage.getCampaignName(),
