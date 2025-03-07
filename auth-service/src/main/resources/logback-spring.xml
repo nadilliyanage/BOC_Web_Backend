@@ -1,6 +1,5 @@
-<!-- src/main/resources/logback-spring.xml -->
 <configuration>
-    <!-- Define the log file for logins -->
+    <!-- Define the log file for login logs -->
     <appender name="LOGIN_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/logins.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -19,8 +18,8 @@
         <appender-ref ref="LOGIN_LOG" />
     </logger>
 
-    <!-- Root logger -->
+    <!-- Root logger (exclude login logs) -->
     <root level="INFO">
-        <appender-ref ref="LOGIN_LOG" />
+        <!-- Add other appenders here if needed -->
     </root>
 </configuration>

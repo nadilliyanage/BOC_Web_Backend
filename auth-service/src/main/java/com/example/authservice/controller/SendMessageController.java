@@ -79,8 +79,8 @@ public class SendMessageController {
 
     @GetMapping("/error-sms-count")
     public ResponseEntity<Long> getCountOfErrorMessage() {
-        long scheduledSMSCount = sendMessageService.getCountOfErrorMessage();
-        return ResponseEntity.ok(scheduledSMSCount);
+        long errorSMSCount = sendMessageService.getCountOfErrorMessage();
+        return ResponseEntity.ok(errorSMSCount);
     }
 
 
