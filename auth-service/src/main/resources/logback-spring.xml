@@ -1,15 +1,25 @@
 <configuration>
     <!-- Define the log file for login logs -->
     <appender name="LOGIN_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/logins.log</file>
+        <file>logs/logins/logins.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- Daily rollover -->
-            <fileNamePattern>logs/logins.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- Keep logs for 30 days -->
+            <fileNamePattern>logs/logins/logins.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Define another appender for general logs -->
+    <appender name="GENERAL_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/application_logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/application_logs/application.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -18,8 +28,8 @@
         <appender-ref ref="LOGIN_LOG" />
     </logger>
 
-    <!-- Root logger (exclude login logs) -->
+    <!-- Root logger for general logs -->
     <root level="INFO">
-        <!-- Add other appenders here if needed -->
+        <appender-ref ref="GENERAL_LOG" />
     </root>
 </configuration>

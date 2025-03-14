@@ -19,6 +19,9 @@ public interface SendMessageRepository extends JpaRepository<SendMessage, Long> 
 
     List<SendMessage> findByReferenceNumberIsNotNull();
 
+    List<SendMessage> findByStatusNotIn(List<String> statuses);
+
+
 
     @Query("SELECT new com.example.authservice.dto.MessageCountByDateDTO(DATE(sm.createdAt), COUNT(sm)) " +
             "FROM SendMessage sm " +
