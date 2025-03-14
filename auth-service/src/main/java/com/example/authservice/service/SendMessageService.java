@@ -126,7 +126,8 @@ public class SendMessageService {
                 sendMessage.getSender(),
                 sendMessage.getSchedule(),
                 sendMessage.getStatus(),
-                sendMessage.getReferenceNumber()
+                sendMessage.getReferenceNumber(),
+                sendMessage.getCreatedAt()
         );
     }
 
