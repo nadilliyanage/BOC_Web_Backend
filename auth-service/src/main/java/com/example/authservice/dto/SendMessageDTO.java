@@ -17,12 +17,13 @@ public class SendMessageDTO {
     private List<String> numbers;
     private String message;
     private LocalDateTime schedule;
+    private LocalDateTime created_at;
     private String status;
     private String referenceNumber;
     private boolean removeBlockedNumbers;
 
 
-    public SendMessageDTO( String campaignName, String numbers, String message, String sender, LocalDateTime schedule, String status, String referenceNumber) {
+    public SendMessageDTO( String campaignName, String numbers, String message, String sender, LocalDateTime schedule, String status, String referenceNumber ,  LocalDateTime created_at) {
         this.campaignName = campaignName;
         this.numbers = Collections.singletonList(numbers);
         this.message = message;
@@ -30,6 +31,7 @@ public class SendMessageDTO {
         this.schedule = schedule;
         this.status = status;
         this.referenceNumber = referenceNumber;
+        this.created_at = created_at;
 
     }
 }
