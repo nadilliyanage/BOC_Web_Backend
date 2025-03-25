@@ -39,4 +39,8 @@ public class AuthService {
     public UserTable getUserDetails(String userId) {
         return userTableRepository.findByUserId(userId).orElse(null);
     }
+
+    public boolean userExists(String userId) {
+        return userTableRepository.findByUserId(userId).isPresent();
+    }
 }
