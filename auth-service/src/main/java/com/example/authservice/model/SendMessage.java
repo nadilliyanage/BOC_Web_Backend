@@ -1,14 +1,19 @@
 package com.example.authservice.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-@Getter
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "message")
 public class SendMessage {
     @Id
@@ -22,56 +27,13 @@ public class SendMessage {
     private LocalDateTime schedule; // Local date and time for Sri Lanka
     private String status;
     private String referenceNumber;
+    private String createdBy;
+    private int created_by_id;
+    private String creted_by_userId;
 
     @CreationTimestamp
     private LocalDateTime createdAt; // Automatically populated with the current local date and time
 
-    // Getters and Setters
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 
-
-    public void setCampaignName(String campaignName) {
-        this.campaignName = campaignName;
-    }
-
-
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-
-    public void setSchedule(LocalDateTime schedule) {
-        this.schedule = schedule;
-    }
-
-
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setReferenceNumber(String referenceNumber) {
-        this.referenceNumber = referenceNumber;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
