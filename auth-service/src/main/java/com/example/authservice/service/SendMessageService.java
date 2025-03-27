@@ -36,7 +36,7 @@ public class SendMessageService {
         boolean removeBlockedNumbers = sendMessageDTO.isRemoveBlockedNumbers(); // Get checkbox value
         String created_by = sendMessageDTO.getCreated_by();
         int created_by_id = sendMessageDTO.getCreated_by_id();
-        String creted_by_userId =sendMessageDTO.getCreted_by_userId();
+        String created_by_userId =sendMessageDTO.getCreated_by_userId();
 
         // Filter out blocked numbers if the checkbox is ticked
         List<String> validNumbers = numbers;
@@ -61,7 +61,7 @@ public class SendMessageService {
             sendMessage.setSchedule(schedule);
             sendMessage.setCreatedBy(created_by);
             sendMessage.setCreated_by_id(created_by_id);
-            sendMessage.setCreted_by_userId(creted_by_userId);
+            sendMessage.setCreated_by_userId(created_by_userId);
 
             // Set status based on schedule
             LocalDateTime now = LocalDateTime.now(SRI_LANKA_ZONE);
@@ -136,7 +136,7 @@ public class SendMessageService {
                 sendMessage.getCreatedAt(),
                 sendMessage.getCreatedBy(),
                 sendMessage.getCreated_by_id(),
-                sendMessage.getCreted_by_userId()
+                sendMessage.getCreated_by_userId()
 
         );
     }

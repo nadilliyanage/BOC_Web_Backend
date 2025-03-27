@@ -14,5 +14,5 @@ public class CreateMessageDTO {
     private String status;
     private String created_by;
     private int created_by_id;
-    private String creted_by_userId;
+    private String created_by_userId;
 }

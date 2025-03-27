@@ -29,7 +29,7 @@ public class SendMessage {
     private String referenceNumber;
     private String createdBy;
     private int created_by_id;
-    private String creted_by_userId;
+    private String created_by_userId;
 
     @CreationTimestamp
     private LocalDateTime createdAt; // Automatically populated with the current local date and time

@@ -29,7 +29,7 @@ public class SendCustomizeSMSService { // Updated service name
         boolean removeBlockedNumbers = sendCustomizeSMSDTO.isRemoveBlockedNumbers();
         String created_by = sendCustomizeSMSDTO.getCreated_by();
         int created_by_id = sendCustomizeSMSDTO.getCreated_by_id();
-        String creted_by_userId = sendCustomizeSMSDTO.getCreted_by_userId();
+        String creted_by_userId = sendCustomizeSMSDTO.getCreated_by_userId();
 
 
 //        // Check if the number is blocked (if applicable)
@@ -46,7 +46,7 @@ public class SendCustomizeSMSService { // Updated service name
         sendMessage.setSchedule(schedule);
         sendMessage.setCreatedBy(created_by);
         sendMessage.setCreated_by_id(created_by_id);
-        sendMessage.setCreted_by_userId(creted_by_userId);
+        sendMessage.setCreated_by_userId(creted_by_userId);
 
         // Set status based on schedule
         LocalDateTime now = LocalDateTime.now(SRI_LANKA_ZONE);
