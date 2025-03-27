@@ -11,6 +11,8 @@ public class CreateMessageDTO {
     private Long id;
     private String label;
     private String message;
-    private String createdBy;
     private String status;
+    private String created_by;
+    private int created_by_id;
+    private String creted_by_userId;
 }

@@ -52,6 +52,9 @@ public class CreateMessageService {
         createMessage.setLabel(createMessageDTO.getLabel());
         createMessage.setMessage(createMessageDTO.getMessage());
         createMessage.setStatus("pending"); // Default status is "pending"
+        createMessage.setCreated_by(createMessageDTO.getCreated_by());
+        createMessage.setCreated_by_id(createMessageDTO.getCreated_by_id());
+        createMessage.setCreted_by_userId(createMessageDTO.getCreted_by_userId());
 
         CreateMessage savedCreateMessage = createMessageRepo.save(createMessage);
         return mapToDTO(savedCreateMessage);
@@ -72,6 +75,9 @@ public class CreateMessageService {
         createMessage.setLabel(createMessageDTO.getLabel());
         createMessage.setMessage(createMessageDTO.getMessage());
         createMessage.setStatus("pending"); // Allow status updates
+        createMessage.setCreated_by(createMessageDTO.getCreated_by());
+        createMessage.setCreated_by_id(createMessage.getCreated_by_id());
+        createMessage.setCreted_by_userId(createMessageDTO.getCreted_by_userId());
 
         CreateMessage updatedCreateMessage = createMessageRepo.save(createMessage);
         return mapToDTO(updatedCreateMessage);
@@ -105,8 +111,11 @@ public class CreateMessageService {
                 createMessage.getId(),
                 createMessage.getLabel(),
                 createMessage.getMessage(),
-                createMessage.getCreatedBy(),
-                createMessage.getStatus()
+                createMessage.getStatus(),
+                createMessage.getCreated_by(),
+                createMessage.getCreated_by_id(),
+                createMessage.getCreted_by_userId()
+
         );
     }
 
