@@ -27,6 +27,10 @@ public class SendCustomizeSMSService { // Updated service name
         String message = sendCustomizeSMSDTO.getMessage(); // Generated message (e.g., "Hello Bob, your number is 078546985")
         LocalDateTime schedule = sendCustomizeSMSDTO.getSchedule();
         boolean removeBlockedNumbers = sendCustomizeSMSDTO.isRemoveBlockedNumbers();
+        String created_by = sendCustomizeSMSDTO.getCreated_by();
+        int created_by_id = sendCustomizeSMSDTO.getCreated_by_id();
+        String creted_by_userId = sendCustomizeSMSDTO.getCreted_by_userId();
+
 
 //        // Check if the number is blocked (if applicable)
 //        if (removeBlockedNumbers && numberBlockService.isNumberBlocked(number)) {
@@ -40,6 +44,9 @@ public class SendCustomizeSMSService { // Updated service name
         sendMessage.setNumber(number);
         sendMessage.setMessage(message); // Save the generated message
         sendMessage.setSchedule(schedule);
+        sendMessage.setCreatedBy(created_by);
+        sendMessage.setCreated_by_id(created_by_id);
+        sendMessage.setCreted_by_userId(creted_by_userId);
 
         // Set status based on schedule
         LocalDateTime now = LocalDateTime.now(SRI_LANKA_ZONE);
