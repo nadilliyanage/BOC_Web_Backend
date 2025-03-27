@@ -45,7 +45,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User not found");
         }
 
-        String token = jwtUtil.generateToken(user.getUserId(), user.getRole(), user.getName());
+        String token = jwtUtil.generateToken(user.getUserId(), user.getRole(), user.getName(), user.getId());
 
         loginLogger.info("Successful login - UserID: {}, Role: {}", user.getUserId(), user.getRole());
 

@@ -23,9 +23,11 @@ public class JwtUtil {
 
     private static final long DEFAULT_EXPIRATION_TIME = 3600000; // 1 hour
 
-    public String generateToken(String userId, String role, String name) {
+    public String generateToken(String userId, String role, String name , int id) {
         return Jwts.builder()
                 .setSubject(userId)
+                .claim("id", id)
+                .claim("userId", userId)
                 .claim("role", role)
                 .claim("name", name)
                 .setIssuedAt(new Date())
