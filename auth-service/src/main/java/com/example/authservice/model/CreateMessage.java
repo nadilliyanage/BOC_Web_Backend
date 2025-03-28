@@ -21,6 +21,12 @@ public class CreateMessage {
     private String created_by;
     private int created_by_id;
     private String created_by_userId;
+    private String status_update_by;
+    private int status_update_by_id;
+    private String status_update_by_userId;
+    private String updated_by;
+    private int updated_by_id;
+    private String updated_by_userId;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'pending'")
     private String status; // New field to track message status (e.g., pending, rejected, accepted)

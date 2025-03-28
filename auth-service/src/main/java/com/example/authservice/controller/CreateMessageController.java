@@ -55,7 +55,7 @@ public class CreateMessageController {
     }
 
     // Update an SMS type
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<CreateMessageDTO> updateCreateMessage(@PathVariable Long id, @RequestBody CreateMessageDTO createMessageDTO) {
         CreateMessageDTO updatedCreateMessage = createMessage.updateCreateMessage(id, createMessageDTO);
         return ResponseEntity.ok(updatedCreateMessage);
@@ -69,7 +69,7 @@ public class CreateMessageController {
     }
 
     // Update message status (accepted or rejected)
-    @PutMapping("/status/{id}")
+    @PatchMapping("/status/{id}")
     public ResponseEntity<CreateMessageDTO> updateMessageStatus(@PathVariable Long id, @RequestBody CreateMessageDTO createMessageDTO) {
         CreateMessageDTO updatedMessageStatus = createMessage.updateMessageStatus(id, createMessageDTO);
         return ResponseEntity.ok(updatedMessageStatus);
