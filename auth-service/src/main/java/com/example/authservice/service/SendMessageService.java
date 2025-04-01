@@ -150,7 +150,8 @@ public class SendMessageService {
     }
 
     public long getCountOfErrorMessage() {
-        return sendMessageRepository.findByStatus("INVALID_MOBILE").size();
+        return sendMessageRepository.findByStatusNotIn
+                (Arrays.asList("Pending", "Scheduled", "Finished")).size();
     }
 
     public List<MessageCountByDateDTO> getMessageCountByDate() {

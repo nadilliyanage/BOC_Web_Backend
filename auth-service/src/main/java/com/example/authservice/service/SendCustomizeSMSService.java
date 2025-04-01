@@ -59,5 +59,5 @@ public class SendCustomizeSMSService { // Updated service name
         sendMessageRepository.save(sendMessage);
     }
 
-    // Other methods...
+
 }
