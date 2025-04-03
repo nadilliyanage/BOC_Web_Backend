@@ -48,7 +48,7 @@ public class SendMessageService {
 
         // If no valid numbers are left, throw an exception
         if (validNumbers.isEmpty()) {
-            throw new RuntimeException("No valid numbers to save.");
+            throw new RuntimeException("No valid numbers to send.");
         }
 
         // Save each valid number as a separate record
