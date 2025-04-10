@@ -15,4 +15,7 @@ public class SendCustomizeSMSDTO {
     private String message; // Generated message (e.g., "Hello Bob, your number is 078546985")
     private LocalDateTime schedule; // Scheduled time for sending the message
     private boolean removeBlockedNumbers; // Flag to indicate whether to remove blocked numbers
+    private String created_by;
+    private int created_by_id;
+    private String created_by_userId;
 }

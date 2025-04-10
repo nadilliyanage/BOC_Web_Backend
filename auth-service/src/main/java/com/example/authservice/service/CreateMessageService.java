@@ -52,6 +52,9 @@ public class CreateMessageService {
         createMessage.setLabel(createMessageDTO.getLabel());
         createMessage.setMessage(createMessageDTO.getMessage());
         createMessage.setStatus("pending"); // Default status is "pending"
+        createMessage.setCreated_by(createMessageDTO.getCreated_by());
+        createMessage.setCreated_by_id(createMessageDTO.getCreated_by_id());
+        createMessage.setCreated_by_userId(createMessageDTO.getCreated_by_userId());
 
         CreateMessage savedCreateMessage = createMessageRepo.save(createMessage);
         return mapToDTO(savedCreateMessage);
@@ -72,6 +75,9 @@ public class CreateMessageService {
         createMessage.setLabel(createMessageDTO.getLabel());
         createMessage.setMessage(createMessageDTO.getMessage());
         createMessage.setStatus("pending"); // Allow status updates
+        createMessage.setUpdated_by(createMessageDTO.getUpdated_by());
+        createMessage.setUpdated_by_id(createMessage.getUpdated_by_id());
+        createMessage.setUpdated_by_userId(createMessageDTO.getUpdated_by_userId());
 
         CreateMessage updatedCreateMessage = createMessageRepo.save(createMessage);
         return mapToDTO(updatedCreateMessage);
@@ -83,6 +89,9 @@ public class CreateMessageService {
                 .orElseThrow(() -> new RuntimeException("CreateMessage not found with ID: " + id));
 
         createMessage.setStatus(createMessageDTO.getStatus()); // Allow status updates
+        createMessage.setStatus_update_by(createMessageDTO.getStatus_update_by());
+        createMessage.setStatus_update_by_id(createMessage.getStatus_update_by_id());
+        createMessage.setStatus_update_by_userId(createMessageDTO.getStatus_update_by_userId());
 
         CreateMessage updatedCreateMessage = createMessageRepo.save(createMessage);
         return mapToDTO(updatedCreateMessage);
@@ -105,8 +114,18 @@ public class CreateMessageService {
                 createMessage.getId(),
                 createMessage.getLabel(),
                 createMessage.getMessage(),
-                createMessage.getCreatedBy(),
-                createMessage.getStatus()
+                createMessage.getStatus(),
+                createMessage.getCreated_by(),
+                createMessage.getCreated_by_id(),
+                createMessage.getCreated_by_userId(),
+                createMessage.getStatus_update_by(),
+                createMessage.getStatus_update_by_id(),
+                createMessage.getStatus_update_by_userId(),
+                createMessage.getUpdated_by(),
+                createMessage.getUpdated_by_id(),
+                createMessage.getUpdated_by_userId()
+
+
         );
     }
 

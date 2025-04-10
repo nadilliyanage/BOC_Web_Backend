@@ -1,10 +1,15 @@
 package com.example.authservice.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateMessage {
     // Getters and Setters
     @Id
@@ -13,48 +18,18 @@ public class CreateMessage {
 
     private String label;
     private String message;
-    private String createdBy;
+    private String created_by;
+    private int created_by_id;
+    private String created_by_userId;
+    private String status_update_by;
+    private int status_update_by_id;
+    private String status_update_by_userId;
+    private String updated_by;
+    private int updated_by_id;
+    private String updated_by_userId;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'pending'")
     private String status; // New field to track message status (e.g., pending, rejected, accepted)
 
-    // Constructors
-    public CreateMessage() {}
 
-    public CreateMessage(String label, String message, String status) {
-        this.label = label;
-        this.message = message;
-        this.status = status;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    @Override
-    public String toString() {
-        return "CreateMessage{" +
-                "id=" + id +
-                ", label='" + label + '\'' +
-                ", message='" + message + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", status='" + status + '\'' +
-                '}';
-    }
 }
