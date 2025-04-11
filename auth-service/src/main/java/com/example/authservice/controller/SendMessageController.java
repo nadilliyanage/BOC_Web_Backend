@@ -2,6 +2,8 @@ package com.example.authservice.controller;
 
 import com.example.authservice.dto.*;
 import com.example.authservice.service.SendMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping(value = "/api/v1/send-message")
 public class SendMessageController {
+
+    private static final Logger logger = LoggerFactory.getLogger(SendMessageController.class);
 
     @Autowired
     private SendMessageService sendMessageService;
@@ -33,20 +37,43 @@ public class SendMessageController {
     // Fetch pending scheduled
     @GetMapping("/scheduled")
     public ResponseEntity<List<SendMessageDTO>> getScheduledMessages() {
-        return ResponseEntity.ok(sendMessageService.getScheduledMessages());
+        try {
+            logger.info("Fetching scheduled messages");
+            List<SendMessageDTO> scheduledMessages = sendMessageService.getScheduledMessages();
+            logger.info("Found {} scheduled messages", scheduledMessages.size());
+            return ResponseEntity.ok(scheduledMessages);
+        } catch (Exception e) {
+            logger.error("Error fetching scheduled messages: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     // Fetch pending finished
     @GetMapping("/finished")
     public ResponseEntity<List<SendMessageDTO>> getFinishedMessages() {
-        return ResponseEntity.ok(sendMessageService.getFinishedMessages());
+        try {
+            logger.info("Fetching finished messages");
+            List<SendMessageDTO> finishedMessages = sendMessageService.getFinishedMessages();
+            logger.info("Found {} finished messages", finishedMessages.size());
+            return ResponseEntity.ok(finishedMessages);
+        } catch (Exception e) {
+            logger.error("Error fetching finished messages: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     @GetMapping("/error")
     public ResponseEntity<List<SendMessageDTO>> getErrorMessages() {
-        return ResponseEntity.ok(sendMessageService.getErrorMessages());
+        try {
+            logger.info("Fetching error messages");
+            List<SendMessageDTO> errorMessages = sendMessageService.getErrorMessages();
+            logger.info("Found {} error messages", errorMessages.size());
+            return ResponseEntity.ok(errorMessages);
+        } catch (Exception e) {
+            logger.error("Error fetching error messages: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(null);
+        }
     }
-
 
     @PostMapping
     public ResponseEntity<String> sendMessage(@RequestBody SendMessageDTO sendMessageDTO) {
@@ -87,7 +114,6 @@ public class SendMessageController {
         long errorSMSCount = sendMessageService.getCountOfErrorMessage();
         return ResponseEntity.ok(errorSMSCount);
     }
-
 
     @GetMapping("/message-count-by-date")
     public ResponseEntity<List<MessageCountByDateDTO>> getMessageCountByDate(

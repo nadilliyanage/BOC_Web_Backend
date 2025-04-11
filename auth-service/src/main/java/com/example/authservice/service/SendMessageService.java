@@ -4,6 +4,8 @@ import com.example.authservice.dto.*;
 import com.example.authservice.model.CreateMessage;
 import com.example.authservice.model.SendMessage;
 import com.example.authservice.repo.SendMessageRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -13,11 +15,15 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class SendMessageService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SendMessageService.class);
 
     @Autowired
     private SendMessageRepository sendMessageRepository;
@@ -36,7 +42,7 @@ public class SendMessageService {
         boolean removeBlockedNumbers = sendMessageDTO.isRemoveBlockedNumbers(); // Get checkbox value
         String created_by = sendMessageDTO.getCreated_by();
         int created_by_id = sendMessageDTO.getCreated_by_id();
-        String created_by_userId =sendMessageDTO.getCreated_by_userId();
+        String created_by_userId = sendMessageDTO.getCreated_by_userId();
 
         // Filter out blocked numbers if the checkbox is ticked
         List<String> validNumbers = numbers;
@@ -101,44 +107,64 @@ public class SendMessageService {
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
+
     public List<SendMessageDTO> getScheduledMessages() {
-        List<SendMessage> scheduledMessages = sendMessageRepository.findByStatus("Scheduled");
-        return scheduledMessages.stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
-    }
-    public List<SendMessageDTO> getFinishedMessages() {
-        List<SendMessage> finishedMessages = sendMessageRepository.findByReferenceNumberIsNotNull();
-        return finishedMessages.stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+        logger.debug("Fetching scheduled messages from repository");
+        try {
+            List<SendMessage> scheduledMessages = sendMessageRepository.findByStatus("Scheduled");
+            logger.debug("Found {} scheduled messages", scheduledMessages.size());
+            return scheduledMessages.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error in getScheduledMessages: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
+    public List<SendMessageDTO> getFinishedMessages() {
+        logger.debug("Fetching finished messages from repository");
+        try {
+            List<SendMessage> finishedMessages = sendMessageRepository.findByReferenceNumberIsNotNull();
+            logger.debug("Found {} finished messages", finishedMessages.size());
+            return finishedMessages.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error in getFinishedMessages: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
 
     public List<SendMessageDTO> getErrorMessages() {
-        List<SendMessage> errorMessages = sendMessageRepository.findByStatusNotIn
-                (Arrays.asList("Pending", "Scheduled", "Finished"));;
-        return errorMessages.stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+        logger.debug("Fetching error messages from repository");
+        try {
+            List<String> validStatuses = Arrays.asList("Pending", "Scheduled", "Finished");
+            List<SendMessage> errorMessages = sendMessageRepository.findByStatusNotIn(validStatuses);
+            logger.debug("Found {} error messages", errorMessages.size());
+            return errorMessages.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error in getErrorMessages: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
-
     private SendMessageDTO mapToDTO(SendMessage sendMessage) {
-        return new SendMessageDTO(
-                sendMessage.getCampaignName(),
-                sendMessage.getNumber(),
-                sendMessage.getMessage(),
-                sendMessage.getSender(),
-                sendMessage.getSchedule(),
-                sendMessage.getStatus(),
-                sendMessage.getReferenceNumber(),
-                sendMessage.getCreatedAt(),
-                sendMessage.getCreatedBy(),
-                sendMessage.getCreated_by_id(),
-                sendMessage.getCreated_by_userId()
-
-        );
+        SendMessageDTO dto = new SendMessageDTO();
+        dto.setCampaignName(sendMessage.getCampaignName());
+        dto.setSender(sendMessage.getSender());
+        dto.setNumbers(Collections.singletonList(sendMessage.getNumber()));
+        dto.setMessage(sendMessage.getMessage());
+        dto.setSchedule(sendMessage.getSchedule());
+        dto.setStatus(sendMessage.getStatus());
+        dto.setReferenceNumber(sendMessage.getReferenceNumber());
+        dto.setCreated_at(sendMessage.getCreatedAt());
+        dto.setCreated_by(sendMessage.getCreatedBy());
+        dto.setCreated_by_id(sendMessage.getCreated_by_id());
+        dto.setCreated_by_userId(sendMessage.getCreated_by_userId());
+        return dto;
     }
 
     public long getCountOfPendingMessage() {
@@ -150,8 +176,7 @@ public class SendMessageService {
     }
 
     public long getCountOfErrorMessage() {
-        return sendMessageRepository.findByStatusNotIn
-                (Arrays.asList("Pending", "Scheduled", "Finished")).size();
+        return sendMessageRepository.findByStatusNotIn(Arrays.asList("Pending", "Scheduled", "Finished")).size();
     }
 
     public List<MessageCountByDateDTO> getMessageCountByDate() {
@@ -168,5 +193,20 @@ public class SendMessageService {
 
     public List<MessageCountByYearDTO> getMessageCountByYear() {
         return sendMessageRepository.findMessageCountByYear();
+    }
+
+    public SendMessage saveMessage(SendMessageDTO messageDTO) {
+        SendMessage message = new SendMessage();
+        message.setSender(messageDTO.getSender());
+        message.setNumber(String.join(",", messageDTO.getNumbers())); // Convert List<String> to comma-separated string
+        message.setMessage(messageDTO.getMessage());
+        message.setStatus(messageDTO.getStatus());
+        message.setCreatedBy(messageDTO.getCreated_by());
+        message.setCreated_by_id(messageDTO.getCreated_by_id() != null ? messageDTO.getCreated_by_id() : 0);
+        message.setCreated_by_userId(messageDTO.getCreated_by_userId());
+        message.setCreatedAt(LocalDateTime.now());
+        message.setSchedule(messageDTO.getSchedule());
+        message.setCampaignName(messageDTO.getCampaignName());
+        return sendMessageRepository.save(message);
     }
 }
