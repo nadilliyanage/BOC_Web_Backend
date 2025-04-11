@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepo extends JpaRepository<UserTable, Integer> {
 
     // Custom query to get user by ID
-    @Query(value = "SELECT * FROM User WHERE id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM user_table WHERE id = ?1", nativeQuery = true)
     UserTable getUserById(int userId);
 
     // Custom query method to check if a user exists by userId

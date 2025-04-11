@@ -1,6 +1,5 @@
 package com.example.authservice.controller;
 
-
 import com.example.authservice.dto.UserDTO;
 import com.example.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // Endpoint to get all users
+    // Endpoint to get all active users
     @GetMapping("/getusers")
     public List<UserDTO> getUsers() {
         return userService.getAllUsers();
+    }
+
+    // Endpoint to get all deleted users
+    @GetMapping("/getdeletedusers")
+    public List<UserDTO> getDeletedUsers() {
+        return userService.getDeletedUsers();
     }
 
     // Endpoint to add a new user
@@ -41,11 +46,18 @@ public class UserController {
         return userService.updateUser(userDTO);
     }
 
-    // Endpoint to delete a user by their ID
+    // Endpoint to soft delete a user by their ID
     @DeleteMapping("/deleteuser/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         userService.deleteUserById(id);
-        return ResponseEntity.ok("User deleted successfully!");
+        return ResponseEntity.ok("User marked as deleted successfully!");
+    }
+
+    // Endpoint to restore a deleted user
+    @PutMapping("/restoreuser/{id}")
+    public ResponseEntity<String> restoreUser(@PathVariable int id) {
+        userService.restoreUserById(id);
+        return ResponseEntity.ok("User restored successfully!");
     }
 
     // Endpoint to check if a userId already exists
@@ -66,4 +78,3 @@ public class UserController {
         return ResponseEntity.ok(userCount);
     }
 }
-
