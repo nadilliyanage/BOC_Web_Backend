@@ -151,6 +151,77 @@ public class SendMessageService {
         }
     }
 
+    public List<SendMessageDTO> getMessagesByUserId(Integer userId) {
+        logger.debug("Fetching all messages for user ID: {}", userId);
+        try {
+            List<SendMessage> messages = sendMessageRepository.findByCreated_by_id(userId);
+            logger.debug("Found {} messages for user ID: {}", messages.size(), userId);
+            return messages.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error in getMessagesByUserId: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<SendMessageDTO> getPendingMessagesByUserId(Integer userId) {
+        logger.debug("Fetching pending messages for user ID: {}", userId);
+        try {
+            List<SendMessage> messages = sendMessageRepository.findByStatusAndCreated_by_id("Pending", userId);
+            logger.debug("Found {} pending messages for user ID: {}", messages.size(), userId);
+            return messages.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error in getPendingMessagesByUserId: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<SendMessageDTO> getScheduledMessagesByUserId(Integer userId) {
+        logger.debug("Fetching scheduled messages for user ID: {}", userId);
+        try {
+            List<SendMessage> messages = sendMessageRepository.findByStatusAndCreated_by_id("Scheduled", userId);
+            logger.debug("Found {} scheduled messages for user ID: {}", messages.size(), userId);
+            return messages.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error in getScheduledMessagesByUserId: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<SendMessageDTO> getFinishedMessagesByUserId(Integer userId) {
+        logger.debug("Fetching finished messages for user ID: {}", userId);
+        try {
+            List<SendMessage> messages = sendMessageRepository.findByReferenceNumberIsNotNullAndCreated_by_id(userId);
+            logger.debug("Found {} finished messages for user ID: {}", messages.size(), userId);
+            return messages.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error in getFinishedMessagesByUserId: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public List<SendMessageDTO> getErrorMessagesByUserId(Integer userId) {
+        logger.debug("Fetching error messages for user ID: {}", userId);
+        try {
+            List<String> validStatuses = Arrays.asList("Pending", "Scheduled", "Finished");
+            List<SendMessage> messages = sendMessageRepository.findByStatusNotInAndCreated_by_id(validStatuses, userId);
+            logger.debug("Found {} error messages for user ID: {}", messages.size(), userId);
+            return messages.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("Error in getErrorMessagesByUserId: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
     private SendMessageDTO mapToDTO(SendMessage sendMessage) {
         SendMessageDTO dto = new SendMessageDTO();
         dto.setCampaignName(sendMessage.getCampaignName());
@@ -187,12 +258,24 @@ public class SendMessageService {
         return sendMessageRepository.findMessageCountByDate(year, month);
     }
 
+    public List<MessageCountByDateDTO> getMessageCountByDateAndUserId(int year, int month, Integer userId) {
+        return sendMessageRepository.findMessageCountByDateAndUserId(year, month, userId);
+    }
+
     public List<MessageCountByMonthDTO> getMessageCountByMonth(int year) {
         return sendMessageRepository.findMessageCountByMonth(year);
     }
 
+    public List<MessageCountByMonthDTO> getMessageCountByMonthAndUserId(int year, Integer userId) {
+        return sendMessageRepository.findMessageCountByMonthAndUserId(year, userId);
+    }
+
     public List<MessageCountByYearDTO> getMessageCountByYear() {
         return sendMessageRepository.findMessageCountByYear();
+    }
+
+    public List<MessageCountByYearDTO> getMessageCountByYearAndUserId(Integer userId) {
+        return sendMessageRepository.findMessageCountByYearAndUserId(userId);
     }
 
     public SendMessage saveMessage(SendMessageDTO messageDTO) {
@@ -208,5 +291,18 @@ public class SendMessageService {
         message.setSchedule(messageDTO.getSchedule());
         message.setCampaignName(messageDTO.getCampaignName());
         return sendMessageRepository.save(message);
+    }
+
+    public long getCountOfFinishedMessage() {
+        try {
+            logger.debug("Fetching count of finished messages");
+            List<SendMessage> finishedMessages = sendMessageRepository.findByReferenceNumberIsNotNull();
+            long count = finishedMessages.size();
+            logger.debug("Found {} finished messages", count);
+            return count;
+        } catch (Exception e) {
+            logger.error("Error in getCountOfFinishedMessage: {}", e.getMessage(), e);
+            return 0;
+        }
     }
 }

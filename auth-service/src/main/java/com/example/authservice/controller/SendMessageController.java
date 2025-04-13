@@ -123,9 +123,28 @@ public class SendMessageController {
         return ResponseEntity.ok(messageCountByDate);
     }
 
+    @GetMapping("/message-count-by-date/by-user/{userId}")
+    public ResponseEntity<List<MessageCountByDateDTO>> getMessageCountByDateAndUserId(
+            @RequestParam int year,
+            @RequestParam int month,
+            @PathVariable Integer userId) {
+        List<MessageCountByDateDTO> messageCountByDate = sendMessageService.getMessageCountByDateAndUserId(year, month,
+                userId);
+        return ResponseEntity.ok(messageCountByDate);
+    }
+
     @GetMapping("/message-count-by-month")
     public ResponseEntity<List<MessageCountByMonthDTO>> getMessageCountByMonth(@RequestParam int year) {
         List<MessageCountByMonthDTO> messageCountByMonth = sendMessageService.getMessageCountByMonth(year);
+        return ResponseEntity.ok(messageCountByMonth);
+    }
+
+    @GetMapping("/message-count-by-month/by-user/{userId}")
+    public ResponseEntity<List<MessageCountByMonthDTO>> getMessageCountByMonthAndUserId(
+            @RequestParam int year,
+            @PathVariable Integer userId) {
+        List<MessageCountByMonthDTO> messageCountByMonth = sendMessageService.getMessageCountByMonthAndUserId(year,
+                userId);
         return ResponseEntity.ok(messageCountByMonth);
     }
 
@@ -133,5 +152,103 @@ public class SendMessageController {
     public ResponseEntity<List<MessageCountByYearDTO>> getMessageCountByYear() {
         List<MessageCountByYearDTO> messageCountByYear = sendMessageService.getMessageCountByYear();
         return ResponseEntity.ok(messageCountByYear);
+    }
+
+    @GetMapping("/message-count-by-year/by-user/{userId}")
+    public ResponseEntity<List<MessageCountByYearDTO>> getMessageCountByYearAndUserId(
+            @PathVariable Integer userId) {
+        List<MessageCountByYearDTO> messageCountByYear = sendMessageService.getMessageCountByYearAndUserId(userId);
+        return ResponseEntity.ok(messageCountByYear);
+    }
+
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<List<SendMessageDTO>> getMessagesByUserId(@PathVariable Integer userId) {
+        try {
+            logger.info("Fetching messages for user ID: {}", userId);
+            List<SendMessageDTO> messages = sendMessageService.getMessagesByUserId(userId);
+            logger.info("Found {} messages for user ID: {}", messages.size(), userId);
+            return ResponseEntity.ok(messages);
+        } catch (Exception e) {
+            logger.error("Error fetching messages for user ID {}: {}", userId, e.getMessage(), e);
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/pending/by-user/{userId}")
+    public ResponseEntity<List<SendMessageDTO>> getPendingMessagesByUserId(@PathVariable Integer userId) {
+        try {
+            logger.info("Fetching pending messages for user ID: {}", userId);
+            List<SendMessageDTO> messages = sendMessageService.getPendingMessagesByUserId(userId);
+            logger.info("Found {} pending messages for user ID: {}", messages.size(), userId);
+            return ResponseEntity.ok(messages);
+        } catch (Exception e) {
+            logger.error("Error fetching pending messages for user ID {}: {}", userId, e.getMessage(), e);
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/scheduled/by-user/{userId}")
+    public ResponseEntity<List<SendMessageDTO>> getScheduledMessagesByUserId(@PathVariable Integer userId) {
+        try {
+            logger.info("Fetching scheduled messages for user ID: {}", userId);
+            List<SendMessageDTO> messages = sendMessageService.getScheduledMessagesByUserId(userId);
+            logger.info("Found {} scheduled messages for user ID: {}", messages.size(), userId);
+            return ResponseEntity.ok(messages);
+        } catch (Exception e) {
+            logger.error("Error fetching scheduled messages for user ID {}: {}", userId, e.getMessage(), e);
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/finished/by-user/{userId}")
+    public ResponseEntity<List<SendMessageDTO>> getFinishedMessagesByUserId(@PathVariable Integer userId) {
+        try {
+            logger.info("Fetching finished messages for user ID: {}", userId);
+            List<SendMessageDTO> messages = sendMessageService.getFinishedMessagesByUserId(userId);
+            logger.info("Found {} finished messages for user ID: {}", messages.size(), userId);
+            return ResponseEntity.ok(messages);
+        } catch (Exception e) {
+            logger.error("Error fetching finished messages for user ID {}: {}", userId, e.getMessage(), e);
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/error/by-user/{userId}")
+    public ResponseEntity<List<SendMessageDTO>> getErrorMessagesByUserId(@PathVariable Integer userId) {
+        try {
+            logger.info("Fetching error messages for user ID: {}", userId);
+            List<SendMessageDTO> messages = sendMessageService.getErrorMessagesByUserId(userId);
+            logger.info("Found {} error messages for user ID: {}", messages.size(), userId);
+            return ResponseEntity.ok(messages);
+        } catch (Exception e) {
+            logger.error("Error fetching error messages for user ID {}: {}", userId, e.getMessage(), e);
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<SendMessageDTO>> getAllMessages() {
+        try {
+            logger.info("Fetching all messages");
+            List<SendMessageDTO> messages = sendMessageService.getAllSendMessage();
+            logger.info("Found {} total messages", messages.size());
+            return ResponseEntity.ok(messages);
+        } catch (Exception e) {
+            logger.error("Error fetching all messages: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/finished-sms-count")
+    public ResponseEntity<Long> getCountOfFinishedMessage() {
+        try {
+            logger.info("Fetching count of finished messages");
+            long count = sendMessageService.getCountOfFinishedMessage();
+            logger.info("Found {} finished messages", count);
+            return ResponseEntity.ok(count);
+        } catch (Exception e) {
+            logger.error("Error fetching count of finished messages: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(0L);
+        }
     }
 }
