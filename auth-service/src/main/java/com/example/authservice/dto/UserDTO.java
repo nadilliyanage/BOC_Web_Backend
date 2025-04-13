@@ -13,5 +13,5 @@ public class UserDTO {
     private String userName;
     private String role;
     private String department;
-
+    private String status;
 }
